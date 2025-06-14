@@ -687,6 +687,7 @@ def DrawMessagingOptions(cached_data:CacheData):
             ConsoleLog("Messaging", f"Ordering {account.AccountEmail} to interact with target: {target}")
             GLOBAL_CACHE.ShMem.SendMessage(sender_email, account.AccountEmail, SharedCommandType.InteractWithTarget, (target,0,0,0))
     ImGui.show_tooltip("Interact with Target")
+    
     PyImGui.same_line(0,-1)
 
     if PyImGui.button(f"{IconsFontAwesome5.ICON_COMMENT_DOTS}##commands_takedialog"):
@@ -712,6 +713,17 @@ def DrawMessagingOptions(cached_data:CacheData):
             ConsoleLog("Messaging", f"Ordering {account.AccountEmail} to interact with target: {target}")
             GLOBAL_CACHE.ShMem.SendMessage(sender_email, account.AccountEmail, SharedCommandType.InteractWithTarget, (target,1,0,0))
     ImGui.show_tooltip("Get Dialog")
+    
+    PyImGui.same_line(0,-1)
+    
+    if PyImGui.button(f"{IconsFontAwesome5.ICON_EXPAND_ARROWS_ALT}##commands_disbandparty"):
+        accounts = GLOBAL_CACHE.ShMem.GetAllAccountData()
+        sender_email = cached_data.account_email
+        for account in accounts:
+            ConsoleLog("Messaging", "Disbanding account: " + account.AccountEmail)
+            GLOBAL_CACHE.ShMem.SendMessage(sender_email, account.AccountEmail, SharedCommandType.DisbandParty, (0,0,0,0))
+    ImGui.show_tooltip("Disband Party")
+    
     PyImGui.separator()
     if PyImGui.collapsing_header("PCons"):
         PyImGui.push_style_color(PyImGui.ImGuiCol.Text, ButtonColors["Celerity"].active_color.to_tuple_normalized())

@@ -256,7 +256,18 @@ def TakeDialogWithTarget(index, message):
     yield from RestoreHeroAISnapshot(message.ReceiverEmail)
     GLOBAL_CACHE.ShMem.MarkMessageAsFinished(message.ReceiverEmail, index)
     ConsoleLog(MODULE_NAME, f"TakeDialogWithTarget message processed and finished.", Console.MessageType.Info)
+
+#region DisbandParty
+
+def DisbandParty(index, message):
+    GLOBAL_CACHE.ShMem.MarkMessageAsRunning(message.ReceiverEmail, index)
+    GLOBAL_CACHE.Player.SendChatCommand("leave")
+    yield from Routines.Yield.wait(100)
+    GLOBAL_CACHE.ShMem.MarkMessageAsFinished(message.ReceiverEmail, index)
+    ConsoleLog(MODULE_NAME, f"DisbandParty message processed and finished.", Console.MessageType.Info)
     
+#endregion
+
 def GetBlessing(index, message):
     GLOBAL_CACHE.ShMem.MarkMessageAsRunning(message.ReceiverEmail, index)
     sender_data = GLOBAL_CACHE.ShMem.GetAccountDataFromEmail(message.SenderEmail)
